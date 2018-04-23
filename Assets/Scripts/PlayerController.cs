@@ -4,15 +4,11 @@ using System.Collections;
 public class PlayerController : MonoBehaviour {
 	public float shipSpeed = 10f;
 
-	float minX;
-	float maxX;
+	private PlaySpace playSpace;
 	// Use this for initialization
 	void Start () {
-		float cameraDistance = transform.position.z - Camera.main.transform.position.z;
-		Vector3 leftBoundery = Camera.main.ViewportToWorldPoint (new Vector3(0,0,cameraDistance));
-		Vector3 rightBoundery = Camera.main.ViewportToWorldPoint (new Vector3(1,0,cameraDistance));
-		minX = leftBoundery.x;
-		maxX = rightBoundery.x;
+		//bring in variables from the play space script. 
+		playSpace = GameObject.FindObjectOfType<PlaySpace>();
 	}
 	
 	// Update is called once per frame
@@ -27,7 +23,7 @@ public class PlayerController : MonoBehaviour {
 		}
 
 		//clamps player to the play space
-		float newShipX = Mathf.Clamp (transform.position.x, minX+0.5f, maxX-0.5f);
+		float newShipX = Mathf.Clamp (transform.position.x, playSpace.minX+0.5f, playSpace.maxX-0.5f);
 		transform.position = new Vector3(newShipX, transform.position.y, transform.position.z); 
 
 	}
