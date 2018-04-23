@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour {
 	public float laserSpeed = 100f;
 	public float laserRate = 0.2f;
 	public GameObject laserShot;
+	public float health = 200;
 
 	private PlaySpace playSpace;
 
@@ -30,6 +31,20 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 
+	void OnTriggerEnter2D (Collider2D col){
+		EnemyProjectileScript laser = col.gameObject.GetComponent<EnemyProjectileScript>();
+		//if laser is a projectile, then do damage
+		if(laser){
+			//Debug.Log ("Player Hit Detected");
+			health -= laser.damage;
+			laser.Hit();
+			if(health <= 0f){
+				Debug.Log (gameObject+" destroyed.");
+				Destroy (gameObject);
+			}
+		}
+	}
+
 	void PlayerMovement(){
 		//player movement
 		if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A)){
@@ -47,7 +62,6 @@ public class PlayerController : MonoBehaviour {
 
 	void FireLaser(){
 			GameObject laserFire = Instantiate (laserShot, transform.position, Quaternion.identity) as GameObject;
-			//laserFire.transform.parent = transform;
 			laserFire.rigidbody2D.velocity = new Vector3(0f,10f,0f);
 	}
 };
