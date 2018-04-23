@@ -49,7 +49,6 @@ public class PlayerController : MonoBehaviour {
 			GameObject laserFire = Instantiate (laserShot, transform.position, Quaternion.identity) as GameObject;
 			//laserFire.transform.parent = transform;
 			laserFire.rigidbody2D.velocity = new Vector3(0f,10f,0f);
-			Destroy(laserFire, 2);
 	}
 };
 
