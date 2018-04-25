@@ -5,6 +5,12 @@ public class enemyScript : MonoBehaviour {
 	public float health = 150f;
 	public GameObject laserShot;
 	public float fireRate = 0.0001f;
+	public int points = 50;
+	public static int score;
+
+	void start(){
+		score = 0;
+	}
 
 	void OnTriggerEnter2D (Collider2D col){
 		ProjectileScript laser = col.gameObject.GetComponent<ProjectileScript>();
@@ -14,7 +20,9 @@ public class enemyScript : MonoBehaviour {
 			health -= laser.damage;
 			laser.Hit();
 			if(health <= 0f){
-				Debug.Log (gameObject+" destroyed.");
+				//Debug.Log (gameObject+" destroyed.");
+				score = score + points;
+				print("Score: " + score);
 				Destroy (gameObject);
 			}
 		}

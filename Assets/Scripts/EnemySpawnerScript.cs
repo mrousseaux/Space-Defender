@@ -6,6 +6,8 @@ public class EnemySpawnerScript : MonoBehaviour {
 	public float width = 6f;
 	public float hieght = 4f;
 	public float speed = 1f;
+	public float spawnDelay = 2f;
+	public static int wave;
 
 	private PlaySpace playSpace;
 	private bool movingRight = false;
@@ -15,10 +17,9 @@ public class EnemySpawnerScript : MonoBehaviour {
 	}
 	// Use this for initialization
 	void Start () {
-		foreach(Transform child in transform){
-			GameObject enemy = Instantiate (enemyType, child.transform.position, Quaternion.identity) as GameObject;
-		enemy.transform.parent = child;
-		}
+		wave = 1;
+		print("Spawning Wave: " + wave);
+		EnemySpawn ();
 		//bring in variables from the play space script. 
 		playSpace = GameObject.FindObjectOfType<PlaySpace>();
 
@@ -27,14 +28,50 @@ public class EnemySpawnerScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		enemyFormationMovement ();
-
+		EnemyFormationMovement ();
+		if (AllMembersAreDead()) {
+			wave++;
+			print("Spawning Wave: " + wave);
+			EnemySpawn();
+		}
 
 	}
 
+	//checks to see what the next free spawn position is
+	Transform NextFreePosition(){
+		foreach (Transform child in transform) {
+			if(child.childCount <= 0){
+				return child.transform;
+			}
+		}
+		return null;
+	}
+
+	// checks to see if the enemy formation has any children left
+	bool AllMembersAreDead (){
+		foreach (Transform enemyFormationChildren in transform){
+			if (enemyFormationChildren.childCount > 0){
+				return false;
+			}
+		}
+		return true;
+	}
+
+	//spawns the next enemy wave
+	void EnemySpawn(){
+		Transform spawnPositon = NextFreePosition ();
+
+		if(spawnPositon){
+			GameObject enemy = Instantiate (enemyType, spawnPositon.transform.position, Quaternion.identity) as GameObject;
+			enemy.transform.parent = spawnPositon;
+		}
+		if (NextFreePosition()){
+			Invoke("EnemySpawn",spawnDelay);
+		}
+	}
 
 	//handles the formations back and forth movement
-	void enemyFormationMovement(){
+	void EnemyFormationMovement(){
 		if (movingRight) {
 			transform.position += Vector3.right * speed * Time.deltaTime;
 		} else {
