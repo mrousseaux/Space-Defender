@@ -7,5 +7,6 @@ public class ProjectileScript : MonoBehaviour {
 
 	public void Hit(){
 		Destroy (gameObject);
+
 	}
 }

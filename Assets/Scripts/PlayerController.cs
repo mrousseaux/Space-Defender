@@ -5,6 +5,7 @@ public class PlayerController : MonoBehaviour {
 	public float shipSpeed = 10f;
 	public float laserSpeed = 100f;
 	public float laserRate = 0.2f;
+	public AudioClip audioHit;
 	public GameObject laserShot;
 	public float health = 200;
 
@@ -33,10 +34,11 @@ public class PlayerController : MonoBehaviour {
 
 	void OnTriggerEnter2D (Collider2D col){
 		EnemyProjectileScript laser = col.gameObject.GetComponent<EnemyProjectileScript>();
-		//if laser is a projectile, then do damage
+		//if laser is an enemy projectile, then do damage
 		if(laser){
 			//Debug.Log ("Player Hit Detected");
 			health -= laser.damage;
+			AudioSource.PlayClipAtPoint(audioHit, transform.position, 0.5f);
 			laser.Hit();
 			if(health <= 0f){
 				Debug.Log (gameObject+" destroyed.");
@@ -61,8 +63,9 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void FireLaser(){
-			GameObject laserFire = Instantiate (laserShot, transform.position, Quaternion.identity) as GameObject;
+			GameObject laserFire = Instantiate (laserShot, new Vector3(transform.position.x,transform.position.y + 1f, transform.position.z), Quaternion.identity) as GameObject;
 			laserFire.rigidbody2D.velocity = new Vector3(0f,10f,0f);
+			audio.Play ();
 	}
 };
 
