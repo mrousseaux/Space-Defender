@@ -12,7 +12,7 @@ public class PlayerSpawnerScript : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		GameObject player = Instantiate (playerObject, gameObject.transform.position, Quaternion.identity) as GameObject;
-		//player.transform.parent = playerObject;
+		player.transform.parent = gameObject.transform;
 	
 	}
 	
