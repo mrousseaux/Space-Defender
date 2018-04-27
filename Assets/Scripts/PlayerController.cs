@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour {
 	public float laserSpeed = 100f;
 	public float laserRate = 0.2f;
 	public AudioClip audioHit;
+	public AudioClip playerDeathSound;
 	public GameObject laserShot;
 	public float health = 200;
 
@@ -38,9 +39,10 @@ public class PlayerController : MonoBehaviour {
 		if(laser){
 			//Debug.Log ("Player Hit Detected");
 			health -= laser.damage;
-			AudioSource.PlayClipAtPoint(audioHit, transform.position, 0.5f);
+			AudioSource.PlayClipAtPoint(audioHit, transform.position, 1f);
 			laser.Hit();
 			if(health <= 0f){
+				AudioSource.PlayClipAtPoint(playerDeathSound, transform.position, 1f);
 				Debug.Log (gameObject+" destroyed.");
 				Destroy (gameObject);
 			}
