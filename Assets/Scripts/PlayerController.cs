@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour {
 	public AudioClip playerDeathSound;
 	public GameObject laserShot;
 	public float health = 200;
+	public int lives = 3;
 
 	private PlaySpace playSpace;
 
